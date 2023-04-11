@@ -1,5 +1,4 @@
 import csv
-import json
 import socket
 import re # Used for parsing parts of CallerID.com records
 import sys # Used to terminate program
@@ -10,8 +9,6 @@ CSV_FILE = "calls.csv"  # name of the CSV file to save the data to
 LISTEN_ON_UDP_PORT = 3520
 NON_DETAILED_PATTERN = ".*(\d\d) ([IO]) ([ESB]) (\d{4}) ([GB]) (.)(\d) (\d\d/\d\d \d\d:\d\d [AP]M) (.{14})(.{15})"
 DETAILED_PATTERN = ".*(\d\d) ([NFR]) {13}(\d\d/\d\d \d\d:\d\d:\d\d)"
-JSON_FILE = "calls.json"
-
 # TAKE INPUT DATA AND PARSE PARTS
 def parse_packet(packet):
 
@@ -118,18 +115,3 @@ with open(CSV_FILE, "w", newline="") as f:
 while True:
     data, addr = sock.recvfrom(1024)  # receive up to 1024 bytes of data
     parse_packet(data)
-
-    # parse the data from the UDP packet
-    '''parts = data.decode().strip().split(",")
-    print(parts)
-    timestamp = parts[0]
-    caller_id = parts[1]
-    call_type = parts[2]
-    call_duration = parts[3]
-
-    # write the parsed data to the CSV file
-    with open(CSV_FILE, "a", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow([timestamp, caller_id, call_type, call_duration])
-
-    print("Received UDP packet from {}: {}".format(addr, data))'''
